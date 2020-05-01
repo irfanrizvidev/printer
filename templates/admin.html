@@ -1,0 +1,136 @@
+{% extends 'base.html' %} {% block content %}
+Welcome! Admin
+<div class="row">
+    <div class="col s12">
+      <ul class="tabs">
+        <li class="tab col s3 disabled"><a href="#test1">Select Tasks:</a></li>
+        <li class="tab col s3"><a class="active" href="#test2">Add Topup</a></li>
+        <li class="tab col s3"><a href="#test3">Topup Requests</a></li>
+        <li class="tab col s3"><a href="#test4">Add User</a></li>
+      </ul>
+    </div>
+    <div id="test1" class="col s12">Test 1</div>
+    <div id="test2" class="col s12">
+        <table class="striped s6 centered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Topup Amount</th>
+                    <th>Confirm Topup</th>
+                    <th>Delete User</th>
+                    <th>Edit User</th>
+                </tr>
+        </thead>
+        <tbody>
+        {% for user in residents %}
+            <form action="/topup" method="post">
+                <tr>
+                    <td>
+                        {{ user.username|upper }}
+                    </td>
+                    <td>
+                        <input type="number" min="1" max="9" name="topup" value="3">
+                    </td>
+                    <td>
+                        <input type="submit" name="submittopup" id="submittopup">
+            </form>
+                    </td>
+                    <td>
+                        <form action="/deleteuser" method="post">
+                            <input type="hidden" value="{{ user.username }}" name="userdelete">
+                            <input type="submit" value="Delete" name="deleteuser" id="deleteuser">
+                        </form>
+                    </td>
+                    <td>
+                        <form action="/edituser" method="post">
+                            <input type="hidden" value="{{ user.username }}" name="useredit">
+                            <input type="submit" value="Edit" name="edituser" id="edituser">
+                        </form>
+                    </td>
+                    
+
+                </tr>
+            
+        {% endfor %}
+        </tbody>
+        </table>
+
+    </div>
+    
+    
+    
+    <div id="test3" class="col s12">
+    {% for req in requests %}
+        {{ req }}
+    {% endfor %}
+    
+    </div>
+    
+    
+    
+    <div id="test4" class="col s12">
+
+    <center>
+      
+    {% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    {% for message in messages %}
+            {% if message == 'User Created Successfully.' %}
+                <div class="section"></div>
+                <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
+            {% else %}
+                <div class="section"></div>
+                <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
+            {% endif %}
+		{% endfor %}
+      {% else %}
+            <h5 class="indigo-text">Enter Username and Password for new User</h5>
+            <div class="section"></div>
+	  {% endif %}
+	{% endwith %}
+      <div class="container">
+        <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+
+          <form action="/register" class="col s12" method="post">
+            <div class='row'>
+              <div class='col s12'>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class='input-field col s12'>
+                <input class='validate' type='text' name='username' id='email' />
+                <label for='email'>Enter your username</label>
+              </div>
+            </div>
+
+			<div class='row'>
+				<div class='input-field col s12'>
+					<input class='validate' type='password' name='password' id='password' />
+					<label for='password'>Enter your password</label>
+				</div>
+				<div class="switch">
+					<label>
+			      Resident
+			      <input type="checkbox" name="adminorresident">
+			      <span class="lever"></span>
+			      Admin
+			    </label>
+				</div>
+			</div>
+			
+			<br />
+			<center>
+				<div class='row'>
+					<button type='submit' name='btn_login' class='col s12 btn btn-large waves-effect green'>Register</button>
+				</div>
+			</center>
+			</form>
+			</div>
+      </div>
+    </center>
+
+    </div>
+</div>
+
+{% endblock %}

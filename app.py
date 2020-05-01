@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, redirect, request, url_for, session
+from flask import Flask, flash, render_template, redirect, request, url_for, session
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 import bcrypt
@@ -22,9 +22,9 @@ def before_request():
 @app.route('/')
 def index():
     if 'username' in session:
-        return 'You are logged in as ' + session['username']
+        return redirect(url_for('user'))
         
-    return render_template("users.html", users=mongo.db.users.find())
+    return render_template("login.html")
     
 
 @app.route('/login', methods=['POST'])
@@ -35,9 +35,67 @@ def login():
     if login_user:
         if bcrypt.hashpw(request.form['password'].encode('utf-8'), login_user['password'].encode('utf-8')) == login_user['password'].encode('utf-8'):
             session['username'] = request.form['username']
+            session['user_type'] = login_user['admin']
             return redirect(url_for('index'))
 
-    return 'Invalid username/password combination'
+    return render_template("login.html", message="Invalid username or password!")
+
+
+@app.route('/user')
+def user():
+    if 'username' in session:
+        admin = session['user_type']
+        if admin:
+            return redirect(url_for('admin'))
+        else:
+            return redirect(url_for('resident'))
+
+    return redirect(url_for("index"))
+
+
+@app.route('/admin/dashboard')
+def admin():
+    if 'username' in session and session['user_type'] == True:
+        return render_template('admin.html', residents=mongo.db.users.find({'admin': False},
+            {'password':0, '_id':0, 'admin':0}), requests=mongo.db.requests.find({'complete': False},
+            {'_id':0, 'complete':0}))
+
+    return redirect(url_for("index"))
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    if request.method == 'POST' and 'username' in session and session['user_type'] == True:
+        users = mongo.db.users
+        existing_user = users.find_one({'username' : request.form['username']})
+
+        if existing_user is None:
+            if(request.form.get('adminorresident')):
+                adminorresident = True
+            else:
+                adminorresident = False
+            # generates bytes instead of a string
+            hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
+            # converting password to string to match when loggin in
+            hashpass = str(hashpass.decode('utf-8'))
+            users.insert({'username' : request.form['username'], 'password' : hashpass, 'admin': adminorresident})
+            
+            flash('User Created Successfully.')
+            return redirect(url_for('admin', _anchor='test4'))
+            
+        flash('User Already Exists.')
+        return redirect(url_for('admin', _anchor='test4'))
+        
+
+    return redirect(url_for('admin', _anchor='test4'))
+
+
+@app.route('/user/dashboard')
+def resident():
+    if 'username' in session and session['user_type'] == False:
+        return render_template('resident.html')
+
+    return redirect(url_for("index"))
 
 
 @app.route('/logout')
