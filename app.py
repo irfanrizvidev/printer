@@ -1,4 +1,5 @@
 import os
+import json
 from flask import Flask, flash, render_template, redirect, request, url_for, session
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -56,11 +57,61 @@ def user():
 @app.route('/admin/dashboard')
 def admin():
     if 'username' in session and session['user_type'] == True:
-        return render_template('admin.html', residents=mongo.db.users.find({'admin': False},
-            {'password':0, '_id':0, 'admin':0}), requests=mongo.db.requests.find({'complete': False},
-            {'_id':0, 'complete':0}))
+        if session['username'] == 'irfanrizvidev':
+            return render_template('admin.html', residents=mongo.db.users.find({ "username": { '$ne': "irfanrizvidev" } },
+                {'password':0, '_id':0, 'admin':0}), requests=mongo.db.requests.find({'complete': False},
+                {'_id':0, 'complete':0}))
+        else:
+            return render_template('admin.html', residents=mongo.db.users.find({'admin': False},
+                {'password':0, '_id':0, 'admin':0}), requests=mongo.db.requests.find({'complete': False},
+                {'_id':0, 'complete':0}))
 
     return redirect(url_for("index"))
+
+@app.route('/topup', methods=['POST'])
+def topup():
+    if request.method == 'POST' and 'username' in session and session['user_type'] == True:
+        user = request.form['usertopup']
+        topup = request.form['topup']
+        with open('topup.json') as f:
+            data = json.load(f)
+        if(data["name"] == "" and data["topup"] == ""):
+            data["name"] = user
+            data["topup"]= topup
+            with open('topup.json', 'w') as json_file:
+                json.dump(data, json_file)
+            flash('Topup in Queue.')
+            return redirect(url_for('admin', _anchor='test2'))
+        else:
+            flash('Another topup in Queue already.')
+            return redirect(url_for('admin', _anchor='test2'))
+
+    return redirect(url_for("index"))
+               
+
+@app.route('/deleteuser', methods=['POST'])
+def deleteuser():
+    if request.method == 'POST' and 'username' in session and session['user_type'] == True:
+        user = request.form['userdelete']
+        queryResponse = mongo.db.users.delete_one({'username': user})
+        flash('User Delete Successfuly.')
+        return redirect(url_for('admin', _anchor='test2'))
+
+    return redirect(url_for("index"))
+
+@app.route('/admin/dashboard')
+def edituser():
+    if 'username' in session and session['user_type'] == True:
+        if session['username'] == 'irfanrizvidev':
+            return render_template('admin.html', residents=mongo.db.users.find({},
+                {'password':0, '_id':0, 'admin':0}), requests=mongo.db.requests.find({'complete': False},
+                {'_id':0, 'complete':0}))
+        else:
+            return render_template('admin.html', residents=mongo.db.users.find({'admin': False},
+                {'password':0, '_id':0, 'admin':0}), requests=mongo.db.requests.find({'complete': False},
+                {'_id':0, 'complete':0}))
+
+    return redirect(url_for("index"))   
 
 
 @app.route('/register', methods=['POST'])
@@ -82,11 +133,13 @@ def register():
             
             flash('User Created Successfully.')
             return redirect(url_for('admin', _anchor='test4'))
-            
+        elif "edit" in request.form:
+            if(request.form['edit'] == 'edit'):
+                return request.form['edit']
+
         flash('User Already Exists.')
         return redirect(url_for('admin', _anchor='test4'))
         
-
     return redirect(url_for('admin', _anchor='test4'))
 
 

@@ -1,16 +1,40 @@
 {% extends 'base.html' %} {% block content %}
-Welcome! Admin
+
 <div class="row">
     <div class="col s12">
       <ul class="tabs">
         <li class="tab col s3 disabled"><a href="#test1">Select Tasks:</a></li>
         <li class="tab col s3"><a class="active" href="#test2">Add Topup</a></li>
         <li class="tab col s3"><a href="#test3">Topup Requests</a></li>
-        <li class="tab col s3"><a href="#test4">Add User</a></li>
+        <li class="tab col s3"><a href="#test4"  id="adduser">Add User</a></li>
       </ul>
     </div>
     <div id="test1" class="col s12">Test 1</div>
     <div id="test2" class="col s12">
+    <center>
+        {% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    {% for message in messages %}
+            {% if message == 'Topup in Queue.' %}
+                <div class="section"></div>
+                <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
+            {% elif message == 'Another topup in Queue already.' %}
+                <div class="section"></div>
+                <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
+            {% elif message == 'User Delete Successfuly.' %}
+                <div class="section"></div>
+                <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
+            {% else %}
+                <h5 class="indigo-text">Add Topup or Edit User</h5>
+                <div class="section"></div>
+            {% endif %}
+		{% endfor %}
+      {% else %}
+            <h5 class="indigo-text">Add Topup or Edit User</h5>
+            <div class="section"></div>
+	  {% endif %}
+	{% endwith %}
+    </center>
         <table class="striped s6 centered">
             <thead>
                 <tr>
@@ -23,12 +47,13 @@ Welcome! Admin
         </thead>
         <tbody>
         {% for user in residents %}
-            <form action="/topup" method="post">
+            <form action="/topup" method="POST">
                 <tr>
                     <td>
                         {{ user.username|upper }}
                     </td>
                     <td>
+                        <input type="hidden" value="{{ user.username }}" name="usertopup">
                         <input type="number" min="1" max="9" name="topup" value="3">
                     </td>
                     <td>
@@ -38,13 +63,13 @@ Welcome! Admin
                     <td>
                         <form action="/deleteuser" method="post">
                             <input type="hidden" value="{{ user.username }}" name="userdelete">
-                            <input type="submit" value="Delete" name="deleteuser" id="deleteuser">
+                            <input type="submit" value="Delete" name="deleteuser" id="deleteuser" onclick="return confirm('Do you really want to Delete the user permanently?');">
                         </form>
                     </td>
                     <td>
                         <form action="/edituser" method="post">
                             <input type="hidden" value="{{ user.username }}" name="useredit">
-                            <input type="submit" value="Edit" name="edituser" id="edituser">
+                            <input type="submit" class="editsubmit" value="Edit" name="edituser" id="edituser" onclick="editUser();">
                         </form>
                     </td>
                     
@@ -78,9 +103,12 @@ Welcome! Admin
             {% if message == 'User Created Successfully.' %}
                 <div class="section"></div>
                 <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
-            {% else %}
+            {% elif message == 'User Already Exists.' %}
                 <div class="section"></div>
                 <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
+            {% else %}
+                <h5 class="indigo-text">Enter Username and Password for new User</h5>
+                <div class="section"></div>
             {% endif %}
 		{% endfor %}
       {% else %}
@@ -91,7 +119,7 @@ Welcome! Admin
       <div class="container">
         <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
 
-          <form action="/register" class="col s12" method="post">
+          <form id="registerForm" action="/register" class="col s12" method="post">
             <div class='row'>
               <div class='col s12'>
               </div>
@@ -100,7 +128,7 @@ Welcome! Admin
             <div class='row'>
               <div class='input-field col s12'>
                 <input class='validate' type='text' name='username' id='email' />
-                <label for='email'>Enter your username</label>
+                <label id="userLabel" for='email'>Enter your username</label>
               </div>
             </div>
 
@@ -109,7 +137,7 @@ Welcome! Admin
 					<input class='validate' type='password' name='password' id='password' />
 					<label for='password'>Enter your password</label>
 				</div>
-				<div class="switch">
+            <div class="switch">
 					<label>
 			      Resident
 			      <input type="checkbox" name="adminorresident">
@@ -122,7 +150,7 @@ Welcome! Admin
 			<br />
 			<center>
 				<div class='row'>
-					<button type='submit' name='btn_login' class='col s12 btn btn-large waves-effect green'>Register</button>
+					<button type='submit' id="registerSubmit" name='btn_login' class='col s12 btn btn-large waves-effect green'>Register</button>
 				</div>
 			</center>
 			</form>

@@ -49,6 +49,20 @@
             closeOnSelect: false // Close upon selecting a date,
         });
     </script>
+    <script type="text/javascript">
+        $(".editsubmit").on("click", function(e) {
+            e.preventDefault();
+            $("#adduser").text("Edit User");
+            $("#registerForm").append('<input type="hidden" name="edit" value="edit">');
+            $("#registerSubmit").text("Edit User");
+            var value = $(this).closest("form").find('input:hidden').val();
+            $("#email").attr('value', value).prop("readonly", true);
+            $("#userLabel").addClass('active');
+            $("#adduser").click();
+
+        });
+    </script>
+
 </body>
 
 </html>
