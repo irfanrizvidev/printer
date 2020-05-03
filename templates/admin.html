@@ -24,6 +24,9 @@
             {% elif message == 'User Delete Successfuly.' %}
                 <div class="section"></div>
                 <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
+            {% elif message == 'User Details Updated.' %}
+                <div class="section"></div>
+                <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
             {% else %}
                 <h5 class="indigo-text">Add Topup or Edit User</h5>
                 <div class="section"></div>
@@ -57,19 +60,25 @@
                         <input type="number" min="1" max="9" name="topup" value="3">
                     </td>
                     <td>
-                        <input type="submit" name="submittopup" id="submittopup">
+                        <button class="btn waves-effect waves-light" type="submit" name="submittopup" id="submittopup">TOPUP
+                            <i class="material-icons right">send</i>
+                        </button>  
             </form>
                     </td>
                     <td>
                         <form action="/deleteuser" method="post">
                             <input type="hidden" value="{{ user.username }}" name="userdelete">
-                            <input type="submit" value="Delete" name="deleteuser" id="deleteuser" onclick="return confirm('Do you really want to Delete the user permanently?');">
+                            <button class="btn waves-effect red darken-2" type="submit" value="Delete" name="deleteuser" id="deleteuser" onclick="return confirm('Do you really want to Delete the user permanently?');">Delete
+                                <i class="small material-icons right">delete_forever</i>
+                            </button>
                         </form>
                     </td>
                     <td>
                         <form action="/edituser" method="post">
                             <input type="hidden" value="{{ user.username }}" name="useredit">
-                            <input type="submit" class="editsubmit" value="Edit" name="edituser" id="edituser" onclick="editUser();">
+                            <button class="btn waves-effect blue darken-2 editsubmit" type="submit"  name="edituser" id="edituser" onclick="editUser();">EDIT
+                                <i class="material-icons right">edit</i>
+                            </button>  
                         </form>
                     </td>
                     
@@ -85,9 +94,52 @@
     
     
     <div id="test3" class="col s12">
+    {% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    {% for message in messages %}
+            {% if message == 'Topup in Queue..' %}
+                <div class="section"></div>
+                <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
+            {% elif message == 'Another topup in Queue already..' %}
+                <div class="section"></div>
+                <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
+            {% else %}
+                <h5 class="indigo-text">Approve or delete requests</h5>
+                <div class="section"></div>
+            {% endif %}
+		{% endfor %}
+      {% else %}
+            <h5 class="indigo-text">Add Topup or Edit User</h5>
+            <div class="section"></div>
+	  {% endif %}
+	{% endwith %}
+        <ul class="collection">
     {% for req in requests %}
-        {{ req }}
+        
+            <li class="collection-item avatar">
+                <img src="/static/images/topup.jpg" alt="" class="circle">
+                <span class="title"><strong>{{ req.user|upper }}</strong></span>
+                <p> Amount: {{ req.amount }}
+                </p>
+                <div class="secondary-content">
+                    <form class="right">
+                        <input type="hidden" value="{{ req.user }}">
+                        <button class="btn waves-effect red darken-2" type="submit">Delete
+                            <i class="small material-icons right">delete_forever</i>
+                        </button>                
+                    </form>
+                    <form action="/topup" class="right" method="post">
+                        <input type="hidden" value="{{ req.user }}" name="usertopup">
+                        <input type="hidden" value="{{ req.amount }}" name="topup">
+                        <input type="hidden" value="requestTopup" name="requestTopup">
+                        <button class="btn waves-effect waves-light" type="submit">TOPUP
+                            <i class="material-icons right">send</i>
+                        </button>                
+                    </form>
+                </div>
+            </li>
     {% endfor %}
+        </ul>
     
     </div>
     
@@ -107,12 +159,12 @@
                 <div class="section"></div>
                 <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
             {% else %}
-                <h5 class="indigo-text">Enter Username and Password for new User</h5>
+                <h5 class="indigo-text">Enter details for User</h5>
                 <div class="section"></div>
             {% endif %}
 		{% endfor %}
       {% else %}
-            <h5 class="indigo-text">Enter Username and Password for new User</h5>
+            <h5 class="indigo-text">Enter details for User</h5>
             <div class="section"></div>
 	  {% endif %}
 	{% endwith %}

@@ -1,5 +1,4 @@
 {% extends 'base.html' %} {% block content %}
-Welcome Resident
 <div class="row">
     <div class="col s12">
       <ul class="tabs">
@@ -13,17 +12,29 @@ Welcome Resident
     <div id="test2" class="col s12">
     
         <center>
-      {% if message is defined and message %}
-      <h5 class="card-panel pink lighten-4">{{ message }}</h5>
-      {% endif %}
-    {% if message is not defined and not message %}
-      <h5 class="indigo-text">Please, Enter the amount to top up.</h5>
-      <div class="section"></div>
-    {% endif %}
+      {% with messages = get_flashed_messages() %}
+	  {% if messages %}
+	    {% for message in messages %}
+            {% if message == 'Topup request Created!' %}
+                <div class="section"></div>
+                <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
+            {% elif message == 'Avtive request Pending Approval.' %}
+                <div class="section"></div>
+                <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
+            {% else %}
+                <h5 class="indigo-text">Please, Enter the amount to top up.</h5>
+                <div class="section"></div>
+            {% endif %}
+		{% endfor %}
+      {% else %}
+            <h5 class="indigo-text">Please, Enter the amount to top up.</h5>
+            <div class="section"></div>
+	  {% endif %}
+	{% endwith %}
       <div class="container">
         <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
 
-          <form action="/login" class="col s12" method="post">
+          <form action="/resident/topup" class="col s12" method="post">
             <div class='row'>
               <div class='col s12'>
               </div>
@@ -51,7 +62,29 @@ Welcome Resident
     </center>
 
     </div>
-    <div id="test3" class="col s12">Test 3</div>
+    <div id="test3" class="col s12">
+        <ul class="collection">
+    {% for req in history %}
+        
+            <li class="collection-item avatar">
+                <img src="/static/images/topup.jpg" alt="" class="circle">
+                <span class="title"><strong>{{ req.user|upper }}</strong></span>
+                <p> Amount: {{ req.amount }}
+                </p>
+                <div class="secondary-content">
+                    <form action="/topup" class="right" method="post">
+                        <input type="hidden" value="{{ req.user }}" name="usertopup">
+                        <input type="hidden" value="{{ req.amount }}" name="topup">
+                        <input type="hidden" value="requestTopup" name="requestTopup">
+                        <button class="btn waves-effect waves-light" type="submit">TOPUP
+                            <i class="material-icons right">send</i>
+                        </button>                
+                    </form>
+                </div>
+            </li>
+    {% endfor %}
+        </ul>
+    </div>
     <div id="test4" class="col s12">Test 4</div>
   </div>
 {% endblock %}

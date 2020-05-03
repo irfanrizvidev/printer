@@ -1,5 +1,6 @@
 import os
 import json
+from datetime import date
 from flask import Flask, flash, render_template, redirect, request, url_for, session
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
@@ -80,11 +81,23 @@ def topup():
             data["topup"]= topup
             with open('topup.json', 'w') as json_file:
                 json.dump(data, json_file)
-            flash('Topup in Queue.')
-            return redirect(url_for('admin', _anchor='test2'))
+            if "requestTopup" in request.form:
+                requests = mongo.db.requests
+                requests.update_one({'user' : user}, {"$set": { 'complete': True }})
+                flash('Topup in Queue..')
+                return redirect(url_for('admin', _anchor='test3'))
+            else:
+                requests = mongo.db.requests
+                requests.insert({'user' : user, 'date' : str(date.today().strftime('%d-%m-%Y')), 'amount': topup, 'complete': True})
+                flash('Topup in Queue.')
+                return redirect(url_for('admin', _anchor='test2'))
         else:
-            flash('Another topup in Queue already.')
-            return redirect(url_for('admin', _anchor='test2'))
+            if "requestTopup" in request.form:
+                flash('Another topup in Queue already..')
+                return redirect(url_for('admin', _anchor='test3'))
+            else:
+                flash('Another topup in Queue already.')
+                return redirect(url_for('admin', _anchor='test2'))
 
     return redirect(url_for("index"))
                
@@ -135,7 +148,22 @@ def register():
             return redirect(url_for('admin', _anchor='test4'))
         elif "edit" in request.form:
             if(request.form['edit'] == 'edit'):
-                return request.form['edit']
+                if(request.form.get('adminorresident')):
+                    adminorresident = True
+                else:
+                    adminorresident = False
+
+                if request.form['password'] and request.form['password'] != "" and request.form['password'] is not None:
+                    # generates bytes instead of a string
+                    hashpass = bcrypt.hashpw(request.form['password'].encode('utf-8'), bcrypt.gensalt())
+                    # converting password to string to match when loggin in
+                    hashpass = str(hashpass.decode('utf-8'))
+                    users.update_one({'username' : request.form['username']}, {"$set": { 'password' : hashpass, 'admin': adminorresident }})
+                    flash('User Details Updated.')
+                    return redirect(url_for('admin', _anchor='test2'))
+                users.update_one({'username' : request.form['username']}, {"$set": { 'admin': adminorresident }})
+                flash('User Details Updated.')
+                return redirect(url_for('admin', _anchor='test2'))
 
         flash('User Already Exists.')
         return redirect(url_for('admin', _anchor='test4'))
@@ -146,7 +174,27 @@ def register():
 @app.route('/user/dashboard')
 def resident():
     if 'username' in session and session['user_type'] == False:
-        return render_template('resident.html')
+        return render_template('resident.html', history=mongo.db.requests.find({ "user": session['username'], 'complete': True },
+                {'complete':0, '_id':0}), activerequest=mongo.db.requests.find_one({"user": session['username'], 'complete': False},
+                {'_id':0, 'complete':0}))
+
+    return redirect(url_for("index"))
+
+
+@app.route('/resident/topup', methods=['POST'])
+def residentTopUp():
+    if 'username' in session and session['user_type'] == False:
+        topup = request.form['amount']
+        requests = mongo.db.requests
+        existing_req = requests.find_one({'user' : session['username']})
+
+        if existing_req is None:
+            requests.insert({'user' : session['username'], 'date' : str(date.today().strftime('%d-%m-%Y')), 'amount': topup, 'complete': False})
+            flash('Topup request Created!')
+            return redirect(url_for('resident', _anchor='test2'))
+        
+        flash('Avtive request Pending Approval.')
+        return redirect(url_for('resident', _anchor='test2'))
 
     return redirect(url_for("index"))
 
