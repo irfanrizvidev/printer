@@ -186,7 +186,7 @@ def residentTopUp():
     if 'username' in session and session['user_type'] == False:
         topup = request.form['amount']
         requests = mongo.db.requests
-        existing_req = requests.find_one({'user' : session['username']})
+        existing_req = requests.find_one({'user' : session['username'], 'complete': False})
 
         if existing_req is None:
             requests.insert({'user' : session['username'], 'date' : str(date.today().strftime('%d-%m-%Y')), 'amount': topup, 'complete': False})
@@ -196,6 +196,23 @@ def residentTopUp():
         flash('Avtive request Pending Approval.')
         return redirect(url_for('resident', _anchor='test2'))
 
+    return redirect(url_for("index"))
+
+
+@app.route('/resident/delete', methods=['POST'])
+def requestDelete():
+    if 'username' in session:
+        if "resident" in request.form:
+            user = request.form['requestDelete']
+            mongo.db.requests.delete_one({"user": user, 'complete': False})
+            flash('Request Deleted.')
+            return redirect(url_for('resident', _anchor='test4'))
+        elif "admin" in request.form:
+            user = request.form['requestDelete']
+            mongo.db.requests.delete_one({"user": user, 'complete': False})
+            flash('Request Deleted.')
+            return redirect(url_for('admin', _anchor='test3'))
+        
     return redirect(url_for("index"))
 
 

@@ -103,13 +103,16 @@
             {% elif message == 'Another topup in Queue already..' %}
                 <div class="section"></div>
                 <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
+            {% elif message == 'Request Deleted.' %}
+                <div class="section"></div>
+                <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
             {% else %}
-                <h5 class="indigo-text">Approve or delete requests</h5>
+                <h5 class="indigo-text">Active requests:</h5>
                 <div class="section"></div>
             {% endif %}
 		{% endfor %}
       {% else %}
-            <h5 class="indigo-text">Add Topup or Edit User</h5>
+            <h5 class="indigo-text">Active requests:</h5>
             <div class="section"></div>
 	  {% endif %}
 	{% endwith %}
@@ -122,11 +125,12 @@
                 <p> Amount: {{ req.amount }}
                 </p>
                 <div class="secondary-content">
-                    <form class="right">
-                        <input type="hidden" value="{{ req.user }}">
-                        <button class="btn waves-effect red darken-2" type="submit">Delete
+                    <form class="right" action="/resident/delete" method="post">
+                        <input type="hidden" value="{{ req.user }}" name="requestDelete">
+                        <input type="hidden" value="admin" name="admin">
+                        <button class="btn waves-effect red darken-2" type="submit" name="deleterequest" id="deleterequest" onclick="return confirm('Do you really want to Delete the request?');">Delete
                             <i class="small material-icons right">delete_forever</i>
-                        </button>                
+                        </button>
                     </form>
                     <form action="/topup" class="right" method="post">
                         <input type="hidden" value="{{ req.user }}" name="usertopup">
