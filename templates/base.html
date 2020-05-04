@@ -2,39 +2,40 @@
 <html>
 
 <head>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-	<link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}" type="text/css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}" type="text/css" />
 </head>
 
 <body>
-	<header>
-		<nav>
-			<div class="nav-wrapper">
-				<a href="{{url_for('login')}}" class="brand-logo">Temple Printer Application</a>
-				<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
-				<ul id="nav-mobile" class="right hide-on-med-and-down">
-					{% if session['username'] %}
-					<li><a href="#" class="btn disabled teal darken-2">Hi {{ session['username']|upper }}! </a></li>
-					<li><a href="{{url_for('logout')}}">Logout</a></li>
-					{% endif %}
-				</ul>
-				<ul class="side-nav" id="mobile-demo">
-					{% if session['username'] %}
-					<li><a href="#" class="btn disabled teal darken-2">Hi {{ session['username']|upper }}! </a></li>
-					<li><a href="{{url_for('logout')}}">Logout</a></li>
-					{% endif %}
-				</ul>
-			</div>
-		</nav>
-	</header>
-	<div class="container">
-		{% block content %} {% endblock %}
-	</div>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-	<script type="text/javascript">
-		$(document).ready(function() {
+    <header>
+        <nav>
+            <div class="nav-wrapper">
+                <a href="{{url_for('login')}}" class="brand-logo">Temple Printer Application</a>
+                <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    {% if session['username'] %}
+                        <li><a href="#" class="btn disabled teal darken-2">Hi {{ session['username']|upper }}!  </a></li>
+                        <li><a href="{{url_for('logout')}}">Logout</a></li>
+                    {% endif %}
+                </ul>
+                <ul class="side-nav" id="mobile-demo">
+                    {% if session['username'] %}
+                        <li><a href="#" class="btn disabled teal darken-2">Hi {{ session['username']|upper }}!  </a></li>
+                        <li><a href="{{url_for('logout')}}">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        {% block content %} {% endblock %}
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+    <script type="text/javascript">
+
+        $(document).ready(function() {
             $('.collapsible').collapsible();
             $('select').material_select();
             $(".button-collapse").sideNav();
@@ -49,9 +50,9 @@
             close: 'Ok',
             closeOnSelect: false // Close upon selecting a date,
         });
-	</script>
-	<script type="text/javascript">
-		$(".editsubmit").on("click", function(e) {
+    </script>
+    <script type="text/javascript">
+        $(".editsubmit").on("click", function(e) {
             e.preventDefault();
             $("#adduser").text("Edit User");
             $("#registerForm").append('<input type="hidden" name="edit" value="edit">');
@@ -62,7 +63,7 @@
             $("#adduser").click();
 
         });
-	</script>
+    </script>
 
 </body>
 

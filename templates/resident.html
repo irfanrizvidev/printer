@@ -47,7 +47,7 @@
 								<label for='amount'>Enter amount</label>
 							</div>
 							<label style='float: center;'>
-								<a class='pink-text' href='#!'><b>Between 1 and 9</b></a>
+								<a class='pink-text' href='#'><b>Between 1 and 9</b></a>
 							</label>
 						</div>
 
@@ -65,6 +65,8 @@
 	</div>
 	<div id="test3" class="col s12">
 		{% if history is not none %}
+        <h5 class="indigo-text">Topup History:</h5>
+        <div class="section"></div>
 		<ul class="collection">
 			{% for req in history %}
 
