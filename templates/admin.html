@@ -1,231 +1,232 @@
 {% extends 'base.html' %} {% block content %}
 
 <div class="row">
-    <div class="col s12">
-      <ul class="tabs">
-        <li class="tab col s3 disabled"><a href="#test1">Select Tasks:</a></li>
-        <li class="tab col s3"><a class="active" href="#test2">Add Topup</a></li>
-        <li class="tab col s3"><a href="#test3">Topup Requests</a></li>
-        <li class="tab col s3"><a href="#test4"  id="adduser">Add User</a></li>
-      </ul>
-    </div>
-    <div id="test1" class="col s12">Test 1</div>
-    <div id="test2" class="col s12">
-    <center>
-        {% with messages = get_flashed_messages() %}
-	  {% if messages %}
-	    {% for message in messages %}
-            {% if message == 'Topup in Queue.' %}
-                <div class="section"></div>
-                <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
-            {% elif message == 'Another topup in Queue already.' %}
-                <div class="section"></div>
-                <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
-            {% elif message == 'User Delete Successfuly.' %}
-                <div class="section"></div>
-                <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
-            {% elif message == 'User Details Updated.' %}
-                <div class="section"></div>
-                <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
-            {% elif message == 'Pending topup cleared.' %}
-                <div class="section"></div>
-                <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
-            {% else %}
-                <h5 class="indigo-text">Add Topup or Edit User</h5>
-                <div class="section"></div>
-            {% endif %}
-		{% endfor %}
-      {% else %}
-            <h5 class="indigo-text">Add Topup or Edit User</h5>
-            <div class="section"></div>
-	  {% endif %}
-	{% endwith %}
+	<div class="col s12">
+		<ul class="tabs">
+			<li class="tab col s3 disabled"><a href="#test1">Select Tasks:</a></li>
+			<li class="tab col s3"><a class="active" href="#test2">Add Topup</a></li>
+			<li class="tab col s3"><a href="#test3">Topup Requests</a></li>
+			<li class="tab col s3"><a href="#test4" id="adduser">Add User</a></li>
+		</ul>
+	</div>
+	<div id="test1" class="col s12">Test 1</div>
+	<div id="test2" class="col s12">
+		<center>
+			{% with messages = get_flashed_messages() %}
+			    {% if messages %}
+			        {% for message in messages %}
+			            {% if message == 'Topup in Queue.' %}
+                            <div class="section"></div>
+                            <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
+                        {% elif message == 'Another topup in Queue already.' %}
+                            <div class="section"></div>
+                            <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
+                        {% elif message == 'User Delete Successfuly.' %}
+                            <div class="section"></div>
+                            <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
+                        {% elif message == 'User Details Updated.' %}
+                            <div class="section"></div>
+                            <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
+                        {% elif message == 'Pending topup cleared.' %}
+                            <div class="section"></div>
+                            <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
+                        {% else %}
+                            <h5 class="indigo-text">Add Topup or Edit User</h5>
+                            <div class="section"></div>
+                        {% endif %}
+			            {% endfor %}
+			    {% else %}
+                    <h5 class="indigo-text">Add Topup or Edit User</h5>
+                    <div class="section"></div>
+                {% endif %}
+			{% endwith %}
 
-    <form action="/admin/clear/topup" method="post">
-        <button class="btn waves-effect waves-light col s12" type="submit" onclick="return confirm('Clear Pending topup requests?');">
+			<form action="/admin/clear/topup" method="post">
+				<button class="btn waves-effect waves-light col s12" type="submit" onclick="return confirm('Clear Pending topup requests?');">
             <i class="small material-icons left">phonelink_erase</i> Clear Topup <i class="small material-icons right">phonelink_erase</i>
         </button>
-    </form>
+			</form>
 
-    </center>
-        <table class="striped s6 centered">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Topup Amount</th>
-                    <th>Confirm Topup</th>
-                    <th>Delete User</th>
-                    <th>Edit User</th>
-                </tr>
-        </thead>
-        <tbody>
-        {% for user in residents %}
-            <form action="/topup" method="POST">
-                <tr>
-                    <td>
-                        {{ user.username|upper }}
+		</center>
+		<table class="striped s6 centered">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Topup Amount</th>
+					<th>Confirm Topup</th>
+					<th>Delete User</th>
+					<th>Edit User</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for user in residents %}
+				<form action="/topup" method="POST">
+					<tr>
+						<td>
+							{{ user.username|upper }}
+						</td>
+						<td>
+							<input type="hidden" value="{{ user.username }}" name="usertopup">
+							<input type="number" min="1" max="9" name="topup" value="3">
                     </td>
-                    <td>
-                        <input type="hidden" value="{{ user.username }}" name="usertopup">
-                        <input type="number" min="1" max="9" name="topup" value="3">
-                    </td>
-                    <td>
-                        <button class="btn waves-effect waves-light" type="submit" name="submittopup" id="submittopup">TOPUP
+						<td>
+							<button class="btn waves-effect waves-light" type="submit" name="submittopup" id="submittopup">TOPUP
                             <i class="material-icons right">send</i>
-                        </button>  
-            </form>
-                    </td>
-                    <td>
-                        <form action="/deleteuser" method="post">
-                            <input type="hidden" value="{{ user.username }}" name="userdelete">
-                            <button class="btn waves-effect red darken-2" type="submit" value="Delete" name="deleteuser" id="deleteuser" onclick="return confirm('Do you really want to Delete the user permanently?');">Delete
+                        </button>
+				</form>
+				</td>
+				<td>
+					<form action="/deleteuser" method="post">
+						<input type="hidden" value="{{ user.username }}" name="userdelete">
+						<button class="btn waves-effect red darken-2" type="submit" value="Delete" name="deleteuser" id="deleteuser" onclick="return confirm('Do you really want to Delete the user permanently?');">Delete
                                 <i class="small material-icons right">delete_forever</i>
                             </button>
-                        </form>
-                    </td>
-                    <td>
-                        <form action="/edituser" method="post">
-                            <input type="hidden" value="{{ user.username }}" name="useredit">
-                            <button class="btn waves-effect blue darken-2 editsubmit" type="submit"  name="edituser" id="edituser" onclick="editUser();">EDIT
+					</form>
+				</td>
+				<td>
+					<form action="/edituser" method="post">
+						<input type="hidden" value="{{ user.username }}" name="useredit">
+						<button class="btn waves-effect blue darken-2 editsubmit" type="submit"  name="edituser" id="edituser" onclick="editUser();">EDIT
                                 <i class="material-icons right">edit</i>
-                            </button>  
-                        </form>
-                    </td>
-                    
+                            </button>
+					</form>
+				</td>
 
-                </tr>
-            
-        {% endfor %}
-        </tbody>
-        </table>
 
-    </div>
-    
-    
-    
-    <div id="test3" class="col s12">
-    {% with messages = get_flashed_messages() %}
-	  {% if messages %}
-	    {% for message in messages %}
-            {% if message == 'Topup in Queue..' %}
-                <div class="section"></div>
-                <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
-            {% elif message == 'Another topup in Queue already..' %}
-                <div class="section"></div>
-                <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
-            {% elif message == 'Request Deleted.' %}
-                <div class="section"></div>
-                <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
-            {% else %}
-                <h5 class="indigo-text">Active requests:</h5>
-                <div class="section"></div>
-            {% endif %}
-		{% endfor %}
-      {% else %}
-            <h5 class="indigo-text">Active requests:</h5>
-            <div class="section"></div>
-	  {% endif %}
-	{% endwith %}
-        <ul class="collection">
-    {% for req in requests %}
-        
-            <li class="collection-item avatar">
-                <img src="/static/images/topup.jpg" alt="" class="circle">
-                <span class="title"><strong>{{ req.user|upper }}</strong></span>
-                <p> Amount: {{ req.amount }} <br>
+				</tr>
+
+				{% endfor %}
+			</tbody>
+		</table>
+
+	</div>
+
+
+
+	<div id="test3" class="col s12">
+		{% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message == 'Topup in Queue..' %}
+                        <div class="section"></div>
+                        <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
+                    {% elif message == 'Another topup in Queue already..' %}
+                        <div class="section"></div>
+                        <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
+                    {% elif message == 'Request Deleted.' %}
+                        <div class="section"></div>
+                        <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
+                    {% else %}
+                        <h5 class="indigo-text">Active requests:</h5>
+                        <div class="section"></div>
+                    {% endif %}
+		            {% endfor %}
+		        {% else %}
+                    <h5 class="indigo-text">Active requests:</h5>
+                    <div class="section"></div>
+                {% endif %}
+		{% endwith %}
+		<ul class="collection">
+			{% for req in requests %}
+
+			<li class="collection-item avatar">
+				<img src="/static/images/topup.jpg" alt="" class="circle">
+				<span class="title"><strong>{{ req.user|upper }}</strong></span>
+				<p> Amount: {{ req.amount }} <br>
                     Date: {{ req.date }}
                 </p>
-                <div class="secondary-content">
-                    <form class="right" action="/resident/delete" method="post">
-                        <input type="hidden" value="{{ req.user }}" name="requestDelete">
-                        <input type="hidden" value="admin" name="admin">
-                        <button class="btn waves-effect red darken-2" type="submit" name="deleterequest" id="deleterequest" onclick="return confirm('Do you really want to Delete the request?');">Delete
+					<div class="secondary-content">
+						<form class="right" action="/resident/delete" method="post">
+							<input type="hidden" value="{{ req.user }}" name="requestDelete">
+							<input type="hidden" value="admin" name="admin">
+							<button class="btn waves-effect red darken-2" type="submit" name="deleterequest" id="deleterequest" onclick="return confirm('Do you really want to Delete the request?');">Delete
                             <i class="small material-icons right">delete_forever</i>
                         </button>
-                    </form>
-                    <form action="/topup" class="right" method="post">
-                        <input type="hidden" value="{{ req.user }}" name="usertopup">
-                        <input type="hidden" value="{{ req.amount }}" name="topup">
-                        <input type="hidden" value="requestTopup" name="requestTopup">
-                        <button class="btn waves-effect waves-light" type="submit">TOPUP
+						</form>
+						<form action="/topup" class="right" method="post">
+							<input type="hidden" value="{{ req.user }}" name="usertopup">
+							<input type="hidden" value="{{ req.amount }}" name="topup">
+							<input type="hidden" value="requestTopup" name="requestTopup">
+							<button class="btn waves-effect waves-light" type="submit">TOPUP
                             <i class="material-icons right">send</i>
-                        </button>                
-                    </form>
-                </div>
-            </li>
-    {% endfor %}
-        </ul>
-    
-    </div>
-    
-    
-    
-    <div id="test4" class="col s12">
+                        </button>
+						</form>
+					</div>
+			</li>
+			{% endfor %}
+		</ul>
 
-    <center>
-      
-    {% with messages = get_flashed_messages() %}
-	  {% if messages %}
-	    {% for message in messages %}
-            {% if message == 'User Created Successfully.' %}
-                <div class="section"></div>
-                <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
-            {% elif message == 'User Already Exists.' %}
-                <div class="section"></div>
-                <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
-            {% else %}
-                <h5 class="indigo-text">Enter details for User</h5>
-                <div class="section"></div>
-            {% endif %}
-		{% endfor %}
-      {% else %}
-            <h5 class="indigo-text">Enter details for User</h5>
-            <div class="section"></div>
-	  {% endif %}
-	{% endwith %}
-      <div class="container">
-        <div class="z-depth-1 grey lighten-4 row" style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+	</div>
 
-          <form id="registerForm" action="/register" class="col s12" method="post">
-            <div class='row'>
-              <div class='col s12'>
-              </div>
-            </div>
 
-            <div class='row'>
-              <div class='input-field col s12'>
-                <input class='validate' type='text' name='username' id='email' />
-                <label id="userLabel" for='email'>Enter your username</label>
-              </div>
-            </div>
 
-			<div class='row'>
-				<div class='input-field col s12'>
-					<input class='validate' type='password' name='password' id='password' />
-					<label for='password'>Enter your password</label>
-				</div>
-            <div class="switch">
-					<label>
+	<div id="test4" class="col s12">
+
+		<center>
+
+			{% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message == 'User Created Successfully.' %}
+                            <div class="section"></div>
+                            <h5 class="card-panel green lighten-1 white-text">{{ message }}</h5>
+                        {% elif message == 'User Already Exists.' %}
+                            <div class="section"></div>
+                            <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
+                        {% else %}
+                            <h5 class="indigo-text">Enter details for User</h5>
+                            <div class="section"></div>
+                        {% endif %}
+			            {% endfor %}
+                {% else %}
+                    <h5 class="indigo-text">Enter details for User</h5>
+                    <div class="section"></div>
+                {% endif %}
+			{% endwith %}
+			<div class="container">
+				<div class="z-depth-1 grey lighten-4 row"
+					style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
+
+					<form id="registerForm" action="/register" class="col s12" method="post">
+						<div class='row'>
+							<div class='col s12'>
+							</div>
+						</div>
+
+						<div class='row'>
+							<div class='input-field col s12'>
+								<input class='validate' type='text' name='username' id='email' />
+								<label id="userLabel" for='email'>Enter your username</label>
+							</div>
+						</div>
+
+						<div class='row'>
+							<div class='input-field col s12'>
+								<input class='validate' type='password' name='password' id='password' />
+								<label for='password'>Enter your password</label>
+							</div>
+							<div class="switch">
+								<label>
 			      Resident
 			      <input type="checkbox" name="adminorresident">
 			      <span class="lever"></span>
 			      Admin
 			    </label>
-				</div>
-			</div>
-			
-			<br />
-			<center>
-				<div class='row'>
-					<button type='submit' id="registerSubmit" name='btn_login' class='col s12 btn btn-large waves-effect green'>Register</button>
-				</div>
-			</center>
-			</form>
-			</div>
-      </div>
-    </center>
+							</div>
+						</div>
 
-    </div>
+						<br />
+						<center>
+							<div class='row'>
+								<button type='submit' id="registerSubmit" name='btn_login' class='col s12 btn btn-large waves-effect green'>Register</button>
+							</div>
+						</center>
+					</form>
+				</div>
+			</div>
+		</center>
+
+	</div>
 </div>
 
 {% endblock %}
