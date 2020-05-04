@@ -69,6 +69,7 @@ def admin():
 
     return redirect(url_for("index"))
 
+
 @app.route('/topup', methods=['POST'])
 def topup():
     if request.method == 'POST' and 'username' in session and session['user_type'] == True:
@@ -80,10 +81,10 @@ def topup():
             data["name"] = user
             data["topup"]= topup
             with open('topup.json', 'w') as json_file:
-                json.dump(data, json_file)
+                json.dump(data, json_file, indent=4)
             if "requestTopup" in request.form:
                 requests = mongo.db.requests
-                requests.update_one({'user' : user}, {"$set": { 'complete': True }})
+                requests.update_one({'user' : user, "complete" : False}, {"$set": { 'complete': True }})
                 flash('Topup in Queue..')
                 return redirect(url_for('admin', _anchor='test3'))
             else:
@@ -101,6 +102,18 @@ def topup():
 
     return redirect(url_for("index"))
                
+
+@app.route('/admin/clear/topup', methods=['POST'])
+def clearpending():
+    if 'username' in session and session['user_type'] == True:
+        blank = {"name": "", "topup": ""}
+        with open('topup.json', 'w') as json_file:
+            json.dump(blank, json_file, indent=4)
+        flash("Pending topup cleared.")
+        return redirect(url_for('admin', _anchor='test2'))
+
+    return redirect(url_for("index"))
+
 
 @app.route('/deleteuser', methods=['POST'])
 def deleteuser():

@@ -27,6 +27,9 @@
             {% elif message == 'User Details Updated.' %}
                 <div class="section"></div>
                 <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
+            {% elif message == 'Pending topup cleared.' %}
+                <div class="section"></div>
+                <h5 class="card-panel red lighten-1 white-text">{{ message }}</h5>
             {% else %}
                 <h5 class="indigo-text">Add Topup or Edit User</h5>
                 <div class="section"></div>
@@ -37,6 +40,13 @@
             <div class="section"></div>
 	  {% endif %}
 	{% endwith %}
+
+    <form action="/admin/clear/topup" method="post">
+        <button class="btn waves-effect waves-light col s12" type="submit" onclick="return confirm('Clear Pending topup requests?');">
+            <i class="small material-icons left">phonelink_erase</i> Clear Topup <i class="small material-icons right">phonelink_erase</i>
+        </button>
+    </form>
+
     </center>
         <table class="striped s6 centered">
             <thead>
@@ -122,7 +132,8 @@
             <li class="collection-item avatar">
                 <img src="/static/images/topup.jpg" alt="" class="circle">
                 <span class="title"><strong>{{ req.user|upper }}</strong></span>
-                <p> Amount: {{ req.amount }}
+                <p> Amount: {{ req.amount }} <br>
+                    Date: {{ req.date }}
                 </p>
                 <div class="secondary-content">
                     <form class="right" action="/resident/delete" method="post">
