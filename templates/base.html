@@ -11,17 +11,17 @@
     <header>
         <nav>
             <div class="nav-wrapper">
-                <a href="{{url_for('login')}}" class="brand-logo">Task Manager</a>
+                <a href="{{url_for('login')}}" class="brand-logo">Temple Printer Application</a>
                 <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
-                    <li><a href="{{url_for('login')}}">Home</a></li>
-                    <li><a href="{{url_for('login')}}">New Task</a></li>
-                    <li><a href="{{url_for('login')}}">Manage Categories</a></li>
+                    {% if session['username'] %}
+                        <li><a href="{{url_for('logout')}}">Logout</a></li>
+                    {% endif %}
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
-                    <li><a href="{{url_for('login')}}">Home</a></li>
-                    <li><a href="{{url_for('login')}}">New Task</a></li>
-                    <li><a href="{{url_for('login')}}">Manage Categories</a></li>
+                    {% if session['username'] %}
+                        <li><a href="{{url_for('logout')}}">Logout</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>
