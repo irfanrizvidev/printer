@@ -15,11 +15,13 @@
                 <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     {% if session['username'] %}
+                        <li><a href="#" class="btn disabled teal darken-2">Hi {{ session['username']|upper }}!  </a></li>
                         <li><a href="{{url_for('logout')}}">Logout</a></li>
                     {% endif %}
                 </ul>
                 <ul class="side-nav" id="mobile-demo">
                     {% if session['username'] %}
+                        <li><a href="#" class="btn disabled teal darken-2">Hi {{ session['username']|upper }}!  </a></li>
                         <li><a href="{{url_for('logout')}}">Logout</a></li>
                     {% endif %}
                 </ul>
