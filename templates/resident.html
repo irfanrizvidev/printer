@@ -76,11 +76,18 @@
 				<p> Amount: {{ req.amount }} <br>
                     Date: {{ req.date }}
                 </p>
-					<div class="secondary-content">
+                    <div class="hide-on-med-and-up">
 						<button class="btn disabled">completed
                         <i class="material-icons right">check_circle</i>
                     </button>
 					</div>
+                    <div class="hide-on-small-only">
+                        <div class="secondary-content">
+                            <button class="btn disabled">completed
+                            <i class="material-icons right">check_circle</i>
+                        </button>
+                        </div>
+                    </div>
 			</li>
 			{% endfor %}
 		</ul>
@@ -115,7 +122,16 @@
 				<p> Amount: {{ activerequest.amount }} <br>
                         Date: {{ activerequest.date }}
                     </p>
-					<div class="secondary-content">
+                    <div class="hide-on-med-and-up">
+						<form action="/resident/delete" method="post">
+							<input type="hidden" value="{{ activerequest.user }}" name="requestDelete">
+							<input type="hidden" value="resident" name="resident">
+							<button class="btn waves-effect red darken-2" type="submit" name="deleterequest" id="deleterequest" onclick="return confirm('Do you really want to Delete the request?');">Delete
+                                <i class="small material-icons right">delete_forever</i>
+                            </button>
+						</form>
+					</div>
+					<div class="secondary-content hide-on-small-only">
 						<form action="/resident/delete" method="post">
 							<input type="hidden" value="{{ activerequest.user }}" name="requestDelete">
 							<input type="hidden" value="resident" name="resident">
