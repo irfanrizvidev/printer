@@ -1,4 +1,5 @@
 {% extends 'base.html' %} {% block content %}
+<!-- tabs to show different functions in the residents dashboard -->
 <div class="row">
 	<div class="col s12">
 		<ul class="tabs">
@@ -8,10 +9,15 @@
 			<li class="tab col s3"><a href="#test4">Active Request</a></li>
 		</ul>
 	</div>
+    <!-- tab 1 is used as a heading for other tabs -->
 	<div id="test1" class="col s12">Test 1</div>
+
+    <!-- tab 2 is used to show a form to make a topup request -->
 	<div id="test2" class="col s12">
 
 		<center>
+            <!-- The following logic filters the flash messages and show the relevant one or the heading -->
+
 			{% with messages = get_flashed_messages() %}
 			    {% if messages %}
 			        {% for message in messages %}
@@ -31,6 +37,7 @@
                             <div class="section"></div>
 			    {% endif %}
 			{% endwith %}
+            <!-- container to keep the form element -->
 			<div class="container">
 				<div class="z-depth-1 grey lighten-4 row s12"
 					style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
@@ -40,12 +47,13 @@
 							<div class='col s12'>
 							</div>
 						</div>
-
+                        <!-- input field for topup amount -->
 						<div class='row'>
 							<div class='input-field col s12'>
 								<input class='validate' type='number' name='amount' id='amount' value="3" min="1" max="9" />
 								<label for='amount'>Enter amount</label>
 							</div>
+                            <!-- message to user for input -->
 							<label style='float: center;'>
 								<a class='pink-text' href='#'><b>Between 1 and 9</b></a>
 							</label>
@@ -63,19 +71,27 @@
 		</center>
 
 	</div>
+
+    <!-- tab 3 shows al the previous completed topup requests -->
 	<div id="test3" class="col s12">
+        <!-- checking if there is something to display -->
 		{% if history is not none %}
         <h5 class="indigo-text">Topup History:</h5>
         <div class="section"></div>
 		<ul class="collection">
+            <!-- looping throuhg all the requests in history -->
 			{% for req in history %}
-
+            <!-- filling the information in the loop to create Materialize collections -->
 			<li class="collection-item avatar">
+                <!-- image for styling -->
 				<img src="/static/images/topup.jpg" alt="" class="circle">
+                <!-- showing the name of user in bold -->
 				<span class="title"><strong>{{ req.user|upper }}</strong></span>
-				<p> Amount: {{ req.amount }} <br>
-                    Date: {{ req.date }}
+				<p> Amount: <b>{{ req.amount }}</b> <br>
+                    Date: <b>{{ req.date }}</b>
                 </p>
+                    <!-- two different layouts for small screens and medium to large screens -->
+                    <!-- The button confirms the status of the request -->
                     <div class="hide-on-med-and-up">
 						<button class="btn disabled">completed
                         <i class="material-icons right">check_circle</i>
@@ -92,11 +108,14 @@
 			{% endfor %}
 		</ul>
 		{% else %}
+            <!-- if history did not have any requests then show the following heading -->
             <h5 class="indigo-text">Nothing to show here.</h5>
             <div class="section"></div>
 		{% endif %}
 	</div>
+    <!-- tab 4 is used to show active request. There could be one active request by any user at any time. -->
 	<div id="test4" class="col s12">
+        <!-- The following logic filters the flash messages and show the relevant one or the heading -->
 		{% with messages = get_flashed_messages() %}
 		    {% if messages %}
 		        {% for message in messages %}
@@ -113,7 +132,7 @@
                 <div class="section"></div>
             {% endif %}
 		{% endwith %}
-
+        <!-- checking if there is actually an active request pending to be approved -->
 		{% if activerequest is not none %}
 		<ul class="collection">
 			<li class="collection-item avatar">
@@ -122,6 +141,8 @@
 				<p> Amount: {{ activerequest.amount }} <br>
                         Date: {{ activerequest.date }}
                     </p>
+                    <!-- two differnet layouts for small screens and medium to large screens -->
+                    <!-- for small screens it shown the delete button after details of request -->
                     <div class="hide-on-med-and-up">
 						<form action="/resident/delete" method="post">
 							<input type="hidden" value="{{ activerequest.user }}" name="requestDelete">
@@ -131,6 +152,7 @@
                             </button>
 						</form>
 					</div>
+                    <!-- for medium to large screens it shows delete button as a secondary content on the top right of the request -->
 					<div class="secondary-content hide-on-small-only">
 						<form action="/resident/delete" method="post">
 							<input type="hidden" value="{{ activerequest.user }}" name="requestDelete">
