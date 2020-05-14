@@ -1,7 +1,7 @@
 import os
 import json
 from datetime import date
-from flask import Flask, flash, render_template, redirect, request, url_for, session
+from flask import Flask, flash, render_template, redirect, request, url_for, session, make_response
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 import bcrypt
@@ -233,6 +233,14 @@ def requestDelete():
 def logout():
     session.clear()
     return redirect(url_for('index'))
+
+
+@app.route('/clear/from/laptop/connected/to/printer')
+def clearaftersuccess():
+    if request.authorization and request.authorization.username == 'irfanrizvidevfromotherside' and request.authorization.password == 'ihopenobodyW!ll':
+        return '<h1>it worked</h1>'
+    
+    return make_response('Count not verify!', 401, {'WWW-Authenticate' : 'Basic realm="Login Required"'})
 
 
 if __name__ == '__main__':

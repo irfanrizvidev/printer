@@ -1,20 +1,21 @@
+/* class to set the font size of website title in nav */
 .logo-text {
-
     font-size: 1.5em;
-
 }
-
+/* putting some space between the two button on the requests page in admin dashboard */
 .request-button {
     margin-bottom: .5em;
 }
-
+/* giving all the button same width */
 .user-button {
     width: 145px;
 }
-
+/* class to show buttons coving the whole div on small screens */
 .button-width {
     width: 100%;
 }
+
+/* Got the code from https://codepen.io/team/css-tricks/pen/wXgJww?editors=1100 for responsive tables */
 /*
 	Max width before this PARTICULAR table gets nasty. This query will take effect for any screen smaller than 760px and also iPads specifically.
 	*/

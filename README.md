@@ -1,3 +1,6 @@
+basic http authentication:
+https://www.youtube.com/watch?v=VW8qJxy4XcQ
+
 responsive table:
 https://codepen.io/team/css-tricks/pen/wXgJww?editors=1100
 
