@@ -27,10 +27,10 @@ This printer app is very desireable due to COVID-19 pandemic and it can help to 
 
 <div align="center"> **A gif demo is below on a large screen:** </div>
 
-![Demo of admin dashboard](/assets/images/admin.gif)
+![Demo of admin dashboard](/static/assets/images/admin.gif)
 
 ### User/Resident Dashboard
-![Demo of user dashboard](/assets/images/resident.gif)
+![Demo of user dashboard](/static/assets/images/resident.gif)
 ## Features
 The app has many features which make it responsive and easy to use. Some of the features could, however be implemented to improve it.
 ### Existing Features
