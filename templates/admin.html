@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-
+<!-- creation of different tabs for admin dashboards -->
 <div class="row">
 	<div class="col s12">
 		<ul class="tabs">
@@ -9,9 +9,12 @@
 			<li class="tab col s3"><a href="#test4" id="adduser">Add User</a></li>
 		</ul>
 	</div>
+    <!-- tab 1 is used as a heading for other tabs -->
 	<div id="test1" class="col s12">Test 1</div>
+    <!-- tab 2 shows all the users registered and options to top up their accounts, delete the users or edit the users -->
 	<div id="test2" class="col s12">
 		<center>
+            <!-- The following logic filters the flash messages and show the relevant one or the heading -->
 			{% with messages = get_flashed_messages() %}
 			    {% if messages %}
 			        {% for message in messages %}
@@ -40,7 +43,7 @@
                     <div class="section"></div>
                 {% endif %}
 			{% endwith %}
-
+            <!-- this form is created to clear any unprocessed topups which are not required -->
 			<form action="/admin/clear/topup" method="post">
 				<button class="btn waves-effect waves-light col s12" type="submit" onclick="return confirm('Clear Pending topup requests?');">
             <i class="small material-icons left">phonelink_erase</i> Clear Topup <i class="small material-icons right">phonelink_erase</i>
@@ -50,8 +53,11 @@
             <div class="section"></div>
 
 		</center>
+        <!-- The following table is generated with rows which are dependant on the number of users need to be shown in the dashboards which
+        also depends on the role of the admin check credits-->
 		 <table role="table" class="striped">
 			<thead role="rowgroup">
+                <!-- defining the headings -->
 				<tr role="row">
 					<th role="columnheader">Name</th>
 					<th role="columnheader">Topup Amount</th>
@@ -60,6 +66,7 @@
 					<th role="columnheader">Edit User</th>
 				</tr>
 			</thead>
+            <!-- creating the rows and fields with fetched data from DB -->
 			<tbody role="rowgroup">
 				{% for user in residents %}
 				<form action="/topup" method="POST">
@@ -78,6 +85,7 @@
 				</form>
 				</td>
 				<td role="cell">
+                    <!-- form to delete the user -->
 					<form action="/deleteuser" method="post">
 						<input type="hidden" value="{{ user.username }}" name="userdelete">
 						<button class="btn waves-effect red darken-2 user-button" type="submit" value="Delete" name="deleteuser" id="deleteuser" onclick="return confirm('Do you really want to Delete the user permanently?');">Delete
@@ -86,6 +94,7 @@
 					</form>
 				</td>
 				<td role="cell">
+                    <!-- form to edit the user, the button is captured by javascript -->
 					<form action="/edituser" method="post">
 						<input type="hidden" value="{{ user.username }}" name="useredit">
 						<button class="btn waves-effect blue darken-2 editsubmit user-button" type="submit"  name="edituser" id="edituser" onclick="editUser();">EDIT
@@ -104,8 +113,9 @@
 	</div>
 
 
-
+    <!-- tab 3 is used to show active topup requests from the users -->
 	<div id="test3" class="col s12">
+        <!-- The following logic filters the flash messages and show the relevant one or the heading -->
 		{% with messages = get_flashed_messages() %}
             {% if messages %}
                 {% for message in messages %}
@@ -128,6 +138,7 @@
                     <div class="section"></div>
                 {% endif %}
 		{% endwith %}
+        <!-- Materialize collection are used to lay out the requests -->
 		<ul class="collection">
 			{% for req in requests %}
 
@@ -137,6 +148,8 @@
 				<p> Amount: <b>{{ req.amount }}</b> <br>
                     Date: <b>{{ req.date }}</b> <br>
                 </p>
+                    <!-- Two layouts to suite small screens and medium to large -->
+                    <!-- Two buttons to delete or approve the requets for small screens -->
                     <div class="hide-on-med-and-up">
                         <div>
                             <form action="/resident/delete" method="post">
@@ -158,7 +171,7 @@
                             </form>
                         </div>
 					</div>
-                
+                    <!-- on medium or large screens show these buttons as secondary content and not show on small screens -->
 					<div class="secondary-content hide-on-small-only">
 						<form class="right" action="/resident/delete" method="post">
 							<input type="hidden" value="{{ req.user }}" name="requestDelete">
@@ -183,11 +196,11 @@
 	</div>
 
 
-
+    <!-- tab 4 is to show the form to add/edit the users -->
 	<div id="test4" class="col s12">
 
 		<center>
-
+        <!-- The following logic filters the flash messages and show the relevant one or the heading -->
 			{% with messages = get_flashed_messages() %}
                 {% if messages %}
                     {% for message in messages %}
@@ -207,6 +220,7 @@
                     <div class="section"></div>
                 {% endif %}
 			{% endwith %}
+            <!-- container to hold all the elements of the form  -->
 			<div class="container">
 				<div class="z-depth-1 grey lighten-4 row"
 					style="display: inline-block; padding: 32px 48px 0px 48px; border: 1px solid #EEE;">
@@ -216,26 +230,27 @@
 							<div class='col s12'>
 							</div>
 						</div>
-
+                        <!-- username input field with its label -->
 						<div class='row'>
 							<div class='input-field col s12'>
 								<input class='validate' type='text' name='username' id='email' />
 								<label id="userLabel" for='email'>Enter your username</label>
 							</div>
 						</div>
-
+                        <!-- password field with its label -->
 						<div class='row'>
 							<div class='input-field col s12'>
 								<input class='validate' type='password' name='password' id='password' />
 								<label for='password'>Enter your password</label>
 							</div>
+                            <!-- this is used to select the role of user (admin or resident) -->
 							<div class="switch">
 								<label>
-			      Resident
-			      <input type="checkbox" name="adminorresident">
-			      <span class="lever"></span>
-			      Admin
-			    </label>
+                                Resident
+                                <input type="checkbox" name="adminorresident">
+                                <span class="lever"></span>
+                                Admin
+                                </label>
 							</div>
 						</div>
 

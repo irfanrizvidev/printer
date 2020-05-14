@@ -5,18 +5,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- css for icons used by Materialize -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- css for materialize css -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <!-- custom css for the app -->
     <link rel="stylesheet" href="{{url_for('static', filename='css/styles.css')}}" type="text/css" />
 </head>
 
 <body>
     <header>
         <nav>
+            <!-- Navigation craeted for large screen and collapsible nav for medium to small screens using Materialize -->
+            <!-- Navbar for large screens -->
             <div class="nav-wrapper">
                 <a href="{{url_for('index')}}" class="logo-text">Temple Printer Application</a>
                 <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <!-- if user is logged in then show welcome and logout  -->
                     {% if session['username'] %}
                         <li><a href="#" class="btn disabled teal darken-2">Hi {{ session['username']|upper }}!  </a></li>
                         <li><a href="{{url_for('logout')}}">Logout</a></li>
@@ -24,7 +30,9 @@
                         <li><a href="#" class="btn disabled teal darken-2">Please Login!</a></li>
                     {% endif %}
                 </ul>
+                <!-- collapisble nav for small screens  -->
                 <ul class="side-nav" id="mobile-demo">
+                    <!-- if user is logged in then show welcome and logout  -->
                     {% if session['username'] %}
                         <li><a href="#" class="btn disabled teal darken-2">Hi {{ session['username']|upper }}!  </a></li>
                         <li><a href="{{url_for('logout')}}">Logout</a></li>
@@ -38,8 +46,12 @@
     <div class="container">
         {% block content %} {% endblock %}
     </div>
+    <!-- jquery script -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- materialize script to make tabs working -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+    <!-- script to make the navbar collapisble -->
     <script type="text/javascript">
 
         $(document).ready(function() {
@@ -48,26 +60,20 @@
             $(".button-collapse").sideNav();
             $('.tabs').tabs();
         });
-
-        $('.datepicker').pickadate({
-            selectMonths: true, // Creates a dropdown to control month
-            selectYears: 15, // Creates a dropdown of 15 years to control year,
-            today: 'Today',
-            clear: 'Clear',
-            close: 'Ok',
-            closeOnSelect: false // Close upon selecting a date,
-        });
     </script>
+    <!-- custom script which uses the create new user form to edit the user -->
     <script type="text/javascript">
-        $(".editsubmit").on("click", function(e) {
-            e.preventDefault();
-            $("#adduser").text("Edit User");
-            $("#registerForm").append('<input type="hidden" name="edit" value="edit">');
-            $("#registerSubmit").text("Edit User");
-            var value = $(this).closest("form").find('input:hidden').val();
-            $("#email").attr('value', value).prop("readonly", true);
-            $("#userLabel").addClass('active');
-            $("#adduser").click();
+        $(".editsubmit").on("click", function(e) { // when the edit button in tab 2 is pressed
+            e.preventDefault(); // prevent the default submit action
+            $("#adduser").text("Edit User"); // change the tab heading to Edit user instead of Add user
+            // append an input field in the form to know that user is being edited not created
+            $("#registerForm").append('<input type="hidden" name="edit" value="edit">');  
+            $("#registerSubmit").text("Edit User"); // change the button text to Edit User instead of add user
+            // select the closest form of the edit button and retrieve user name value
+            var value = $(this).closest("form").find('input:hidden').val(); 
+            $("#email").attr('value', value).prop("readonly", true); // put the username in the input field of the new user form and make it readonly
+            $("#userLabel").addClass('active'); // moving the label of input field out to avoid gibberish
+            $("#adduser").click(); // go to tab to add new user which has changed to edit user tab
 
         });
     </script>
