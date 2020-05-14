@@ -9,7 +9,7 @@ The topup is done by storing the username and topup amount in a json file. A JAV
   it connects to printer using selenium API for java. It updates users account and connects back to the website using an authenticated route to reset
   the topup.json to perform further topups.
 
-<div align="center"> The game is live at: https://printer-application.herokuapp.com/ </div>
+<div align="center"> The app is live at: https://printer-application.herokuapp.com/ </div>
 ## UX
 This printer app is very desireable due to COVID-19 pandemic and it can help to redunce the infection chances.
 ### User Stories
@@ -27,10 +27,10 @@ This printer app is very desireable due to COVID-19 pandemic and it can help to 
 
 <div align="center"> **A gif demo is below on a large screen:** </div>
 
-![Demo of admin dashboard](/static/assets/images/admin.gif)
+![Demo of admin dashboard](/static/images/admin.gif)
 
 ### User/Resident Dashboard
-![Demo of user dashboard](/static/assets/images/resident.gif)
+![Demo of user dashboard](/static/images/resident.gif)
 ## Features
 The app has many features which make it responsive and easy to use. Some of the features could, however be implemented to improve it.
 ### Existing Features
