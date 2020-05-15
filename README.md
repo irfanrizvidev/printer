@@ -10,6 +10,7 @@ The topup is done by storing the username and topup amount in a json file. A JAV
   the topup.json to perform further topups.
 
 <div align="center"> The app is live at: https://printer-application.herokuapp.com/ </div>
+
 ## UX
 This printer app is very desireable due to COVID-19 pandemic and it can help to redunce the infection chances.
 ### User Stories
@@ -99,9 +100,11 @@ The project is deployed on Github pages on the following link:
 [Live deployed project on Heroku](https://printer-application.herokuapp.com/)
 
 The project is developed using GITPOD IO. GITPOD allows easy to use GIT integration to commit changes on Github. 
+Requirements.txt file and procfile where generated and local variables were initialized for Heroku to host the App.
 The project is deployed on Heroku.com. The heroku.com is connected to github repository to auto-deploy github repository after every push. 
 
 <div align="center">Github connection with Heroku under deploy tab of Printer App</div>
+
 
 ![GITHUB pages](/static/images/herokugithub.jpg)
 

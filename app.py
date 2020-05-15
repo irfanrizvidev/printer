@@ -334,7 +334,7 @@ def logout():
 def clearaftersuccess():
     # basic HTTP authentication to stop unauthorized connection to this route
     # checks if there is authorization and the credentials are correct
-    if request.authorization and request.authorization.username == 'irfanrizvidevfromotherside' and request.authorization.password == 'ihopenobodyW!ll':
+    if request.authorization and request.authorization.username == os.getenv('AUTH_PRINTER_USER') and request.authorization.password == os.getenv('AUTH_PRINTER_PASSWORD'):
         blank = {"name": "", "topup": ""}
         # reset the topup.json with blank dictionary and pretty print
         with open('topup.json', 'w') as json_file:
