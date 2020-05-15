@@ -102,6 +102,7 @@ The project is deployed on Github pages on the following link:
 The project is developed using GITPOD IO. GITPOD allows easy to use GIT integration to commit changes on Github. 
 Requirements.txt file and procfile where generated and local variables were initialized for Heroku to host the App.
 The project is deployed on Heroku.com. The heroku.com is connected to github repository to auto-deploy github repository after every push. 
+MongoDB was used to host the collections and tabels. A url was generated and saved as system variable for security. 
 
 <div align="center">Github connection with Heroku under deploy tab of Printer App</div>
 
