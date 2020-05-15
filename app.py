@@ -349,6 +349,5 @@ def clearaftersuccess():
 if __name__ == '__main__':
     app.secret_key = os.getenv('PRINTER_FLASK_KEY')
     app.run(host=os.environ.get('IP'),
-            port=int(os.environ.get('PORT')),
-            debug=True)
+            port=int(os.environ.get('PORT')))
     
