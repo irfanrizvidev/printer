@@ -2,6 +2,7 @@
 .logo-text {
     font-size: 1.5em;
 }
+
 /* putting some space between the two button on the requests page in admin dashboard */
 .request-button {
     margin-bottom: .5em;
@@ -40,20 +41,13 @@
 			left: -9999px;
 		}
 
-    tr {
-      margin: 0 0 1rem 0;
-    }
-      
-    tr:nth-child(odd) {
-      background: #ccc;
-    }
-    
 		td {
 			/* Behave  like a "row" */
 			border: none;
 			border-bottom: 1px solid #eee;
 			position: relative;
 			padding-left: 50%;
+            background: rgb(255, 87, 51, 0.2);
 		}
 
 		td:before {
@@ -76,4 +70,5 @@
 		td:nth-of-type(3):before { content: "Confirm Topup"; }
 		td:nth-of-type(4):before { content: "Delete User"; }
 		td:nth-of-type(5):before { content: "Edit User"; }
+        td:nth-of-type(5) { margin-bottom: 1em; } 
 	}

@@ -23,14 +23,21 @@ This printer app is very desireable due to COVID-19 pandemic and it can help to 
 * As the aap user, I want the to use HTTPS always to secure usernames and passwords.
 * As the aap user, I want users to have ability to see past topups.
 
-### Admin Dashboard
+### Admin Dashboard Medium/Large Screen
 
 <div align="center"> **A gif demo is below on a large screen:** </div>
 
 ![Demo of admin dashboard](/static/images/admin.gif)
 
-### User/Resident Dashboard
+### Admin Dashboard Small Screen
+![Demo of user dashboard](/static/images/admindash.gif)
+
+### User/Resident Dashboard Medium/Large Screen
 ![Demo of user dashboard](/static/images/resident.gif)
+
+### User/Resident Dashboard Small Screen
+![Demo of user dashboard](/static/images/userdash.gif)
+
 ## Features
 The app has many features which make it responsive and easy to use. Some of the features could, however be implemented to improve it.
 ### Existing Features
@@ -81,54 +88,34 @@ The app has many features which make it responsive and easy to use. Some of the 
 
 
 ## Testing
-The Javascript was tested on https://jshint.com/ for errors. All errors corrected in the Javascript.
 The website is tested on Google Chrome for different screen sizes e.g. (S5 mobile, Iphone, Ipad etc.). The website is also tested on Firefox and Internet explorer latest versions.
-The game was working fine on Google chrome when tested on Firefox and IE. The front of the cards were shown after flipping them. A fix was implemented by applying the following code on .customcard .front classes.
-```
--webkit-transform: rotateX(0deg);
--moz-transform: rotateX(0deg);
--o-transform: rotateX(0deg);
-transform: rotateX(0deg);
-```
-
-Working fine on Goolge:
-
-![Working fine on Google](/assets/images/works-google.png)
-
-Problem on Firefox and IE:
-
-![Working fine on Google](/assets/images/probelm.png)
-
-The HTML was validated on w3.org and the results were OK as seen below:
-
-![HTML Validated](/assets/images/html.jpg)
-
-The css was also validated on w3.org and the results were ok as seen below:
-
-![CSS Validated](/assets/images/cssvalidated.png)
+The website is tested for responsiveness and for all the functions to be working as intended. 
+* The html is valid when checkd on w3school
+* CSS is valid when tested on validator on w3school
+* The database is working fine. 
 
 ## Deployment
 The project is deployed on Github pages on the following link:
-
-[Live deployed project on Github Pages](https://irfanrizvidev.github.io/interativeApp/)
+[Live deployed project on Heroku](https://printer-application.herokuapp.com/)
 
 The project is developed using GITPOD IO. GITPOD allows easy to use GIT integration to commit changes on Github. 
+The project is deployed on Heroku.com. The heroku.com is connected to github repository to auto-deploy github repository after every push. 
+
+<div align="center">Github connection with Heroku under deploy tab of Printer App</div>
+
+![GITHUB pages](/static/images/herokugithub.jpg)
 
 <div align="center">Staging the changes using GIT section on GITPOD</div>
 
-![Gitpod changes staging](/assets/images/stage.png)
+![Gitpod changes staging](/static/images/stage.png)
 
 <div align="center">The changes are commited after a message as shown below</div>
 
-![COmmit changes](/assets/images/commit.png)
+![COmmit changes](/static/images/commit.png)
 
 <div align="center">Pushing changes to Github</div>
 
-![Push on GitPOD](/assets/images/push.png)
-
-<div align="center">Click on Settings and Publish project on Github Pages</div>
-
-![GITHUB pages](/assets/images/githubpages.png)
+![Push on GitPOD](/static/images/push.png)
 
 The same would be achieved using the following git commands:
 ```
@@ -150,26 +137,23 @@ github password entered
 ```
 ## Credits
 Author: Syed Irfan Haider Rizvi
-### Media
-The sound effects used in the game are from the following website:
-https://www.fesliyanstudios.com/sound-effects-search.php?q=sea
 
 ### Acknowledgements
-I received help from different youtube videos by searching javascript match cards.
-I coded the game by myself. I only looked at the videos to get ideas.
 
-basic http authentication:
+I got help from following resources for solving problems:
+
+### basic http authentication:
 https://www.youtube.com/watch?v=VW8qJxy4XcQ
 
-responsive table:
+### Responsive table:
 https://codepen.io/team/css-tricks/pen/wXgJww?editors=1100
 
-login page form
+### Login page form
 https://codepen.io/T-P/pen/bpWqrr
 
-login logic 
+### Login Logic 
 https://github.com/PrettyPrinted/mongodb-user-login/blob/master/login_example.py
 
-HTTPS enforcement (ISSUE on heorku sometime http sometimes https due to load balancers)
+### HTTPS enforcement (ISSUE on heorku sometime http sometimes https due to load balancers)
 https://stackoverflow.com/questions/32237379/python-flask-redirect-to-https-from-http/50041843
 

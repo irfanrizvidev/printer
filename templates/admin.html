@@ -55,7 +55,7 @@
 		</center>
         <!-- The following table is generated with rows which are dependant on the number of users need to be shown in the dashboards which
         also depends on the role of the admin check credits-->
-		 <table role="table" class="striped">
+		 <table role="table">
 			<thead role="rowgroup">
                 <!-- defining the headings -->
 				<tr role="row">
@@ -72,7 +72,7 @@
 				<form action="/topup" method="POST">
 					<tr role="row">
 						<td role="cell">
-							{{ user.username|upper }}
+							<b>{{ user.username|upper }}</b>
 						</td>
 						<td role="cell">
 							<input type="hidden" value="{{ user.username }}" name="usertopup">
@@ -88,7 +88,8 @@
                     <!-- form to delete the user -->
 					<form action="/deleteuser" method="post">
 						<input type="hidden" value="{{ user.username }}" name="userdelete">
-						<button class="btn waves-effect red darken-2 user-button" type="submit" value="Delete" name="deleteuser" id="deleteuser" onclick="return confirm('Do you really want to Delete the user permanently?');">Delete
+						<button class="btn waves-effect red darken-2 user-button" type="submit" value="Delete" name="deleteuser"
+                         id="deleteuser" onclick="return confirm('Do you really want to Delete the user permanently?');">Delete
                                 <i class="small material-icons right">delete_forever</i>
                             </button>
 					</form>
@@ -97,7 +98,8 @@
                     <!-- form to edit the user, the button is captured by javascript -->
 					<form action="/edituser" method="post">
 						<input type="hidden" value="{{ user.username }}" name="useredit">
-						<button class="btn waves-effect blue darken-2 editsubmit user-button" type="submit"  name="edituser" id="edituser" onclick="editUser();">EDIT
+						<button class="btn waves-effect blue darken-2 editsubmit user-button" type="submit"  name="edituser"
+                         id="edituser" onclick="editUser();">EDIT
                                 <i class="material-icons right">edit</i>
                             </button>
 					</form>
